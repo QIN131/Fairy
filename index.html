@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Fairy Core</title>
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+<div id="bg">
+    <canvas id="particles"></canvas>
+    <div class="scanline"></div>
+    <div class="glow-backdrop"></div>
+
+    <div id="fairyContainer">
+        <svg id="fairyIcon" viewBox="0 0 600 600" shape-rendering="geometricPrecision" color-interpolation-filters="sRGB">
+            <defs>
+                <filter id="softGlow" x="-25%" y="-25%" width="150%" height="150%">
+                    <feGaussianBlur stdDeviation="10" result="blur"/>
+                    <feComposite in="SourceGraphic" in2="blur" operator="over"/>
+                </filter>
+
+                <filter id="outerGlow" x="-30%" y="-30%" width="160%" height="160%">
+                    <feGaussianBlur stdDeviation="18" result="blur"/>
+                    <feComposite in="SourceGraphic" in2="blur" operator="over"/>
+                </filter>
+
+                <filter id="combinedGlitchFilter" x="-35%" y="-35%" width="170%" height="170%">
+                    <feTurbulence id="turbNoise" type="turbulence" baseFrequency="0.0 0.0" numOctaves="2" seed="1" result="noise"/>
+                    <feDisplacementMap id="dispMap" in="SourceGraphic" in2="noise" scale="0" xChannelSelector="R" yChannelSelector="G" result="distorted"/>
+
+                    <feColorMatrix in="distorted" type="matrix"
+                        values="1 0 0 0 0
+                                0 0 0 0 0
+                                0 0 0 0 0
+                                0 0 0 1 0" result="chR"/>
+                    <feOffset id="offR" in="chR" dx="0" dy="0" result="offR"/>
+
+                    <feColorMatrix in="distorted" type="matrix"
+                        values="0 0 0 0 0
+                                0 1 0 0 0
+                                0 0 0 0 0
+                                0 0 0 1 0" result="chG"/>
+
+                    <feColorMatrix in="distorted" type="matrix"
+                        values="0 0 0 0 0
+                                0 0 0 0 0
+                                0 0 1 0 0
+                                0 0 0 1 0" result="chB"/>
+                    <feOffset id="offB" in="chB" dx="0" dy="0" result="offB"/>
+
+                    <feBlend in="offR" in2="chG" mode="screen" result="rg"/>
+                    <feBlend in="rg" in2="offB" mode="screen" result="rgbShift"/>
+
+                    <feTurbulence id="tearNoise" type="fractalNoise" baseFrequency="0.0 0.0" numOctaves="1" seed="1" result="tearNoise"/>
+                    <feDisplacementMap id="tearMap" in="rgbShift" in2="tearNoise" scale="0" xChannelSelector="R" yChannelSelector="A"/>
+
+                    <feBlend in="tearMap" in2="SourceGraphic" mode="normal"/>
+                </filter>
+            </defs>
+
+            <circle cx="300" cy="300" r="270" class="outerBase" filter="url(#outerGlow)"/>
+
+            <g id="eyeBodyGroup" filter="url(#combinedGlitchFilter)">
+                <circle id="blueOuterRing" cx="300" cy="300" r="266" class="blueOuterRing"/>
+                <circle id="whiteOuterRing" cx="300" cy="300" r="266" class="whiteOuterRing"/>
+
+                <g id="gearEyeRing">
+                    <circle cx="300" cy="300" r="220" class="gearSolidDisc"/>
+                    <polygon class="gearSpike" points="300,50 338,105 262,105"/>
+                    <polygon class="gearSpike" points="550,300 495,338 495,262"/>
+                    <polygon class="gearSpike" points="300,550 262,495 338,495"/>
+                    <polygon class="gearSpike" points="50,300 105,262 105,338"/>
+                </g>
+
+                <circle cx="300" cy="300" r="180" class="ringWhite"/>
+                <circle cx="300" cy="300" r="132" class="ringLightBlue"/>
+                <circle cx="300" cy="300" r="96" class="ringMidBlue" id="irisRing"/>
+                <circle cx="300" cy="300" r="60" class="ringDarkCenter" id="pupil"/>
+                <circle cx="372" cy="372" r="42" class="whiteDot" id="eyeHighlight"/>
+            </g>
+        </svg>
+
+        <!--标题文字，放在SVG外部，绝对定位向下，不挤压SVG -->
+        <div class="titleWrapper">
+            <div class="titleText">HOLLOW DEEP DIVE SYSTEM</div>
+            <div class="titleLineWrap">
+                <span class="titleLine"></span>
+            </div>
+            <div class="titleReflection">HOLLOW DEEP DIVE SYSTEM</div>
+        </div>
+    </div>
+</div>
+<script src="js/main.js"></script>
+</body>
+</html>
