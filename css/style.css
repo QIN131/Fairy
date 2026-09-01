@@ -1,0 +1,222 @@
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html, body{
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    background: #081022;
+}
+
+#bg{
+    position: fixed;
+    inset: 0;
+}
+
+.glow-backdrop{
+    position: absolute;
+    width: 900px;
+    height: 900px;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    background: #3478ff;
+    border-radius: 50%;
+    filter: blur(120px);
+    opacity: 0.35;
+}
+
+.scanline{
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    background: repeating-linear-gradient(
+        0deg,
+        transparent 0px,
+        transparent 3px,
+        rgba(255,255,255,0.018) 4px
+    );
+}
+
+/* 重点：加高容器高度，容纳SVG+下方标题，不再挤压SVG */
+#fairyContainer{
+    position: absolute;
+    left: 50%;
+    top: 55%;
+    width: 620px;
+    height: 820px;
+    transform: translate(-50%, -50%);
+    animation: containerBreathe 6s ease-in-out infinite;
+}
+
+#fairyIcon{
+    width: 560px;
+    height: 560px;
+    display: block;
+    margin: 0 auto 0;
+}
+
+.outerBase{
+    fill: #3978ed;
+    opacity: 0.35;
+}
+
+.blueOuterRing{
+    fill: none;
+    stroke: #3978ed;
+    stroke-width: 14;
+    stroke-linecap: round;
+}
+
+.whiteOuterRing{
+    fill: none;
+    stroke: #ffffff;
+    stroke-width: 6;
+    stroke-linecap: round;
+}
+
+.gearSolidDisc{
+    fill: #193499;
+}
+
+.gearSpike{
+    fill: #193499;
+}
+
+.ringWhite{
+    fill: #ffffff;
+}
+
+.ringLightBlue{
+    fill: #b4c4ee;
+}
+
+.ringMidBlue{
+    fill: #4285e8;
+    transform-origin: center center;
+    animation: irisRotate 12s linear infinite, irisPulse 8s ease-in-out infinite;
+}
+
+.ringDarkCenter{
+    fill: #173082;
+    transform-origin: center center;
+    animation: pupilPulse 4s ease-in-out infinite;
+}
+
+.whiteDot{
+    fill: #ffffff;
+    filter: url(#softGlow);
+    transform-origin: center center;
+    animation: highlightTwinkle 3s ease-in-out infinite, highlightJump 7s ease-in-out infinite;
+}
+
+@keyframes containerBreathe{
+    0%, 100%{
+        transform: translate(-50%, -50%) scale(1);
+    }
+    50%{
+        transform: translate(-50%, -50%) scale(1.02);
+    }
+}
+
+@keyframes irisRotate{
+    from{ transform: rotate(0deg); }
+    to{ transform: rotate(360deg); }
+}
+
+@keyframes irisPulse{
+    0%, 100%{ opacity: 1; transform: scale(1); }
+    50%{ opacity: 0.85; transform: scale(1.04); }
+}
+
+@keyframes pupilPulse{
+    0%, 100%{ r: 60; }
+    50%{ r: 66; }
+}
+
+@keyframes highlightTwinkle{
+    0%, 100%{ opacity: 0.9; }
+    50%{ opacity: 1; }
+}
+
+@keyframes highlightJump{
+    0%, 100%{ transform: translate(0, 0); }
+    50%{ transform: translate(4px, 4px); }
+}
+
+#particles{
+    position: absolute;
+    inset: 0;
+}
+
+/* ==========标题样式========== */
+.titleWrapper{
+    position: absolute;
+    left: 50%;
+    top: 550px;
+    transform: translateX(-50%);
+    text-align: center;
+    pointer-events: none;
+    width: 100%;
+}
+
+.titleText{
+    color: #ffffff;
+    font-size: 36px;
+    font-weight: 900;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    white-space: nowrap;
+    text-shadow: 0 0 8px rgba(50,120,255,0.6);
+}
+
+.titleLineWrap{
+    width: 100%;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    margin:12px 0;
+}
+.titleLine{
+    width:85%;
+    height:2px;
+    background-color:rgba(255,255,255,0.7);
+}
+
+.titleReflection{
+    color: rgba(255,255,255,0.11);
+    font-size: 36px;
+    font-weight: 900;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    white-space: nowrap;
+    transform: scaleY(-1) translateY(6px);
+    transform-origin: center top;
+}
+
+@media(max-width: 700px){
+    #fairyContainer{
+        width: 420px;
+        height: 640px;
+    }
+
+    #fairyIcon{
+        width: 380px;
+        height: 380px;
+    }
+
+    .titleWrapper{
+        top: 370px;
+    }
+
+    .titleText{
+        font-size: 20px;
+    }
+
+    .titleReflection{
+        font-size: 20px;
+    }
+}
